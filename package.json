@@ -2,6 +2,7 @@
   "name": "authentication-api",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts"
@@ -26,7 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.7.0",
-    "nanoid": "^4.0.0",
+    "nanoid": "^3.0.0",
     "nodemailer": "^6.8.0",
     "pino": "^8.7.0",
     "zod": "^3.19.1"

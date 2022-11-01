@@ -1,8 +1,25 @@
-import { prop, getModelForClass } from "@typegoose/typegoose";
-import { Severity } from "@typegoose/typegoose/lib/internal/constants";
-import { modelOptions } from "@typegoose/typegoose/lib/modelOptions";
+import {
+  getModelForClass,
+  modelOptions,
+  prop,
+  Severity,
+  pre,
+  DocumentType,
+} from "@typegoose/typegoose";
 import { nanoid } from "nanoid";
+import argon2 from "argon2";
+import log from "../utils/logger";
 
+@pre<User>("save", async function () {
+  if (!this.isModified("password")) {
+    return;
+  }
+
+  const hash = await argon2.hash(this.password);
+  this.password = hash;
+
+  return;
+})
 @modelOptions({
   schemaOptions: {
     timestamps: true,
@@ -36,6 +53,15 @@ export class User {
 
   @prop({ default: false })
   verified: boolean;
+
+  async validatePassword(this: DocumentType<User>, candidatePassword: string) {
+    try {
+      return await argon2.verify(this.password, candidatePassword);
+    } catch (err) {
+      log.error(err, "Could not validate password");
+      return false;
+    }
+  }
 }
 
 const UserModel = getModelForClass(User);
