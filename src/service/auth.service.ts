@@ -22,6 +22,10 @@ export async function signRefreshToken({ userId }: { userId: string }) {
   return refreshToken;
 }
 
+export async function findSessionById(id: string) {
+  return SessionModel.findById(id);
+}
+
 export function signAccessToken(user: DocumentType<User>) {
   const payload = omit(user.toJSON(), privateFields);
 

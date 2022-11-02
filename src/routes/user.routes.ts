@@ -6,6 +6,7 @@ import {
   resetPasswordHandler,
   verifyUserHandler,
 } from "../controller/user.controller";
+import requireUser from "../middleware/require-user";
 import validateResource from "../middleware/validate-resource";
 import {
   createUserSchema,
@@ -40,6 +41,6 @@ router.post(
   resetPasswordHandler
 );
 
-router.get("/api/users/me", getCurrentUserHandler);
+router.get("/api/users/me", requireUser, getCurrentUserHandler);
 
 export default router;
